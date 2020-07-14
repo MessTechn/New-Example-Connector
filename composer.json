@@ -10,8 +10,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "jtl/connector": "dev-develop",
-        "doctrine/cache": "^1.11@dev"
+        "jtl/connector": "dev-develop"
     },
     "autoload" : {
         "psr-4" : {

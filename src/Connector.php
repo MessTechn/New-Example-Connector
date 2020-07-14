@@ -4,9 +4,11 @@ namespace Jtl\Connector\Example;
 
 use DI\Container;
 use Jtl\Connector\Core\Authentication\TokenValidatorInterface;
+use Jtl\Connector\Core\Config\ConfigParameter;
+use Jtl\Connector\Core\Config\ConfigSchema;
 use Jtl\Connector\Core\Connector\ConnectorInterface;
 use Jtl\Connector\Core\Mapper\PrimaryKeyMapperInterface;
-use Jtl\Connector\Example\Authentication\TokenLoader;
+use Jtl\Connector\Example\Authentication\TokenValidator;
 use Jtl\Connector\Example\Mapper\PrimaryKeyMapper;
 use Noodlehaus\ConfigInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -20,7 +22,14 @@ class Connector implements ConnectorInterface
 {
     public function initialize(ConfigInterface $config, Container $container, EventDispatcher $eventDispatcher) : void
     {
-
+        if (!$config->has('token')){
+            $config->set("token", "123456789");
+            $config->write();
+        }
+        
+        $configSchema = new ConfigSchema;
+        $configSchema->setParameter(new ConfigParameter("token", "string", true));
+        $configSchema->validateConfig($config);
     }
     
     public function getPrimaryKeyMapper() : PrimaryKeyMapperInterface
@@ -30,7 +39,7 @@ class Connector implements ConnectorInterface
 
     public function getTokenValidator() : TokenValidatorInterface
     {
-        return new TokenLoader;
+        return new TokenValidator;
     }
 
     public function getControllerNamespace() : string
@@ -40,16 +49,16 @@ class Connector implements ConnectorInterface
 
     public function getEndpointVersion() : string
     {
-        // TODO: Implement getEndpointVersion() method.
+        return "0.1";
     }
     
     public function getPlatformVersion() : string
     {
-        // TODO: Implement getPlatformVersion() method.
+        return "1";
     }
 
     public function getPlatformName() : string
     {
-        // TODO: Implement getPlatformName() method.
+        return "ExampleShopSystem";
     }
 }
