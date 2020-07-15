@@ -6,6 +6,13 @@ use Jtl\Connector\Core\Authentication\TokenValidatorInterface;
 
 class TokenValidator implements TokenValidatorInterface
 {
+    protected $checkToken;
+    
+    public function __construct(string $checkToken)
+    {
+        $this->checkToken = $checkToken;
+    }
+    
     /**
      * @inheritDoc
      */

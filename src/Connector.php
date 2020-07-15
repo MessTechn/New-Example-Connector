@@ -7,6 +7,7 @@ use Jtl\Connector\Core\Authentication\TokenValidatorInterface;
 use Jtl\Connector\Core\Config\ConfigParameter;
 use Jtl\Connector\Core\Config\ConfigSchema;
 use Jtl\Connector\Core\Connector\ConnectorInterface;
+use Jtl\Connector\Core\Exception\ConfigException;
 use Jtl\Connector\Core\Mapper\PrimaryKeyMapperInterface;
 use Jtl\Connector\Example\Authentication\TokenValidator;
 use Jtl\Connector\Example\Mapper\PrimaryKeyMapper;
@@ -20,6 +21,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class Connector implements ConnectorInterface
 {
+    protected $checkToken;
+    
     public function initialize(ConfigInterface $config, Container $container, EventDispatcher $eventDispatcher) : void
     {
         if (!$config->has('token')){
@@ -27,9 +30,12 @@ class Connector implements ConnectorInterface
             $config->write();
         }
         
+        //Config Schema Example
         $configSchema = new ConfigSchema;
         $configSchema->setParameter(new ConfigParameter("token", "string", true));
         $configSchema->validateConfig($config);
+        
+        $this->checkToken = $config->get("token");
     }
     
     public function getPrimaryKeyMapper() : PrimaryKeyMapperInterface
@@ -39,7 +45,7 @@ class Connector implements ConnectorInterface
 
     public function getTokenValidator() : TokenValidatorInterface
     {
-        return new TokenValidator;
+        return new TokenValidator($this->checkToken);
     }
 
     public function getControllerNamespace() : string

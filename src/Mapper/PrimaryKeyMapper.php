@@ -3,7 +3,7 @@
 namespace Jtl\Connector\Example\Mapper;
 
 use Jtl\Connector\Core\Mapper\PrimaryKeyMapperInterface;
-use Jtl\Connector\Core\Database\Sqlite3;
+use Jtl\Connector\Example\PDOInterface;
 
 class PrimaryKeyMapper implements PrimaryKeyMapperInterface
 {
@@ -11,12 +11,17 @@ class PrimaryKeyMapper implements PrimaryKeyMapperInterface
     
     public function __construct()
     {
-        $sqlite3 = new Sqlite3;
-        if (!$sqlite3->isConnected()) {
-            $sqlite3->connect(array('location' => sprintf("%s/db/connector.s3db", CONNECTOR_DIR)));
+        $pdo = new PDOInterface();
+        if (!$pdo->isConnected()) {
+            $pdo->connect([
+                "host" => "localhost",
+                "dbName" => "example_connector_db",
+                "username" => "root",
+                "password" => "jtlgmbh",
+            ]);
         }
     
-        $this->db = $sqlite3;
+        $this->db = $pdo;
     }
     
     /**

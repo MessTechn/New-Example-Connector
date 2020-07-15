@@ -1,20 +1,21 @@
 {
-    "name": "root/example-connector-new",
-    "type": "project",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Niklas Kokoschka",
-            "email": "niklas.kokoschka@jtl-software.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "jtl/connector": "dev-develop"
-    },
-    "autoload" : {
-        "psr-4" : {
-            "Jtl\\Connector\\Example\\" : "src/"
-        }
+  "name": "root/example-connector-new",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Niklas Kokoschka",
+      "email": "niklas.kokoschka@jtl-software.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "jtl/connector": "dev-develop",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jtl\\Connector\\Example\\": "src/"
+    }
+  }
 }
